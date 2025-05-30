@@ -12,8 +12,8 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1(@vue/compiler-sfc@3.5.14)(eslint-plugin-format@1.0.1(eslint@9.27.0(jiti@2.4.2)))(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
       '@luxass/unicode-utils':
-        specifier: https://pkg.pr.new/@luxass/unicode-utils@25
-        version: https://pkg.pr.new/@luxass/unicode-utils@25
+        specifier: https://pkg.pr.new/@luxass/unicode-utils@68
+        version: https://pkg.pr.new/@luxass/unicode-utils@68
       '@reactive-vscode/vueuse':
         specifier: ^0.2.17
         version: 0.2.17
@@ -298,12 +298,12 @@ packages:
       prettier-plugin-astro:
         optional: true
 
-  '@luxass/unicode-utils@https://pkg.pr.new/@luxass/unicode-utils@25':
-    resolution: {tarball: https://pkg.pr.new/@luxass/unicode-utils@25}
-    version: 0.6.0
+  '@luxass/unicode-utils@https://pkg.pr.new/@luxass/unicode-utils@68':
+    resolution: {tarball: https://pkg.pr.new/@luxass/unicode-utils@68}
+    version: 0.11.0
 
-  '@luxass/utils@2.1.0':
-    resolution: {integrity: sha512-TZj7ktGHuoXiOTypAagFQ87pjPEcX82bSepu8fIdFlzlOrh4ccXBvqKPQbJi88j481Q8H7QCV5VOgV32bqJb9A==}
+  '@luxass/utils@2.2.1':
+    resolution: {integrity: sha512-riQdjsEXmHxaPDcWappVi1YYF/rsveZTvSIsev1m7qYQrRq6aRNYWTVVPhye3Pdf0NCWUNIKIdtrtpHhx+SgYA==}
     engines: {node: '>=20'}
 
   '@napi-rs/wasm-runtime@0.2.10':
@@ -2986,11 +2986,12 @@ snapshots:
       - typescript
       - vitest
 
-  '@luxass/unicode-utils@https://pkg.pr.new/@luxass/unicode-utils@25':
+  '@luxass/unicode-utils@https://pkg.pr.new/@luxass/unicode-utils@68':
     dependencies:
-      '@luxass/utils': 2.1.0
+      '@luxass/utils': 2.2.1
+      defu: 6.1.4
 
-  '@luxass/utils@2.1.0': {}
+  '@luxass/utils@2.2.1': {}
 
   '@napi-rs/wasm-runtime@0.2.10':
     dependencies:
