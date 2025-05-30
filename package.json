@@ -1,0 +1,119 @@
+{
+  "name": "vscode-ucd",
+  "displayName": "UCD",
+  "version": "0.3.1",
+  "description": "Visualize and find information about UCD files.",
+  "author": {
+    "name": "Lucas Nørgård",
+    "email": "lucasnrgaard@gmail.com"
+  },
+  "publisher": "luxass",
+  "packageManager": "pnpm@10.10.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ucdjs/vscode-ucd.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "ucd.browse-ucd-files",
+        "title": "Browse UCD Files",
+        "category": "UCD"
+      },
+      {
+        "command": "ucd.visualize-file",
+        "title": "Visualize UCD File",
+        "category": "UCD"
+      }
+    ],
+    "configuration": {
+      "title": "UCD",
+      "properties": {
+        "ucd.local-data-files-path": {
+          "type": "string",
+          "description": "Path to local UCD data files",
+          "default": ""
+        },
+        "ucd.data-files-api": {
+          "type": "string",
+          "description": "API URL to fetch UCD data files from",
+          "default": "https://unicode-tools.luxass.dev",
+          "enum": [
+            "https://unicode-tools.luxass.dev",
+            "https://preview.unicode-tools.luxass.dev"
+          ]
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ucd-explorer",
+          "title": "UCD Explorer",
+          "icon": "$(file-code)"
+        }
+      ]
+    },
+    "views": {
+      "ucd-explorer": [
+        {
+          "id": "ucd.all-files",
+          "name": "All Files",
+          "icon": "$(git-pull-request)"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "ucd.visualize-file",
+          "when": "viewItem == ucd:version-file",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "ucd-explorer",
+        "contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "tsdown --minify",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "ext:gen": "vscode-ext-gen --output src/generated/meta.ts --scope ucd",
+    "package": "pnpm vsce package --no-dependencies",
+    "release": "pnpm vsce publish --no-dependencies",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "devDependencies": {
+    "@luxass/eslint-config": "^4.18.1",
+    "@luxass/unicode-utils": "https://pkg.pr.new/@luxass/unicode-utils@25",
+    "@reactive-vscode/vueuse": "^0.2.17",
+    "@types/node": "^22.15.18",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^3.4.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-format": "^1.0.1",
+    "reactive-vscode": "^0.2.17",
+    "tsdown": "^0.11.9",
+    "typescript": "^5.8.3",
+    "vscode-ext-gen": "^1.0.2"
+  }
+}
