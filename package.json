@@ -93,6 +93,7 @@
   },
   "scripts": {
     "vscode:prepublish": "tsdown --minify",
+    "prebuild": "pnpm run ext:gen",
     "build": "tsdown",
     "dev": "tsdown --watch",
     "ext:gen": "vscode-ext-gen --output src/generated/meta.ts --scope ucd",
