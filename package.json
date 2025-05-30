@@ -1,7 +1,7 @@
 {
   "name": "vscode-ucd",
   "displayName": "UCD",
-  "version": "0.3.1",
+  "version": "0.0.0",
   "description": "Visualize and find information about UCD files.",
   "author": {
     "name": "Lucas Nørgård",
