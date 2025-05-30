@@ -8,5 +8,5 @@ export default defineConfig({
   dts: false,
   external: [
     "vscode",
-  ]
+  ],
 });
