@@ -4,7 +4,7 @@ import * as Meta from "./generated/meta";
 import { getFilesByVersion, getTreeViewNodes } from "./views/ucd-explorer";
 
 const { activate, deactivate } = defineExtension(async () => {
-  const _treeView = useTreeView("ucd.all-files", ref(await getTreeViewNodes(config)), {
+  const _treeView = useTreeView("ucd:explorer", ref(await getTreeViewNodes(config)), {
     showCollapseAll: true,
   });
 
@@ -18,6 +18,10 @@ const { activate, deactivate } = defineExtension(async () => {
     },
     [Meta.commands.visualizeFile]: () => {
       logger.info("Visualizing UCD file...");
+    },
+    [Meta.commands.refreshExplorer]: async () => {
+      logger.info("Refreshing UCD Explorer...");
+      logger.info("UCD Explorer refreshed.");
     },
   });
 });
