@@ -1,61 +1,90 @@
 import type { TreeViewNode } from "reactive-vscode";
-import type { Config } from "../config";
+import type { TreeItem } from "vscode";
 import { UNICODE_VERSION_METADATA } from "@luxass/unicode-utils";
-import { useLogger } from "reactive-vscode";
+import { computed, createSingletonComposable, ref, useTreeView } from "reactive-vscode";
+import { ThemeIcon, TreeItemCollapsibleState } from "vscode";
+import { getFilesByVersion } from "../lib/files";
+import { logger } from "../logger";
 
-export async function getTreeViewNodes(config: Config): Promise<TreeViewNode[]> {
-  const entries = await Promise.all(UNICODE_VERSION_METADATA.map(async ({ version }) => getFilesByVersion(config, version)));
-
-  return entries.flat();
+export interface UCDTreeItem extends TreeItem {
+  __ucd?: typeof UNICODE_VERSION_METADATA[number];
 }
 
-export async function getFilesByVersion(config: Config, version: string): Promise<TreeViewNode> {
-  const logger = useLogger("ucd-logger");
-  try {
-    const res = await fetch(new URL(`/api/v1/unicode-files/${version}`, config["data-files-api"]));
+export const useUCDExplorer = createSingletonComposable(() => {
+  const childrenCache = ref<Map<string, TreeViewNode[]>>(new Map());
+  const loadingPromises = ref<Map<string, Promise<TreeViewNode[]>>>(new Map());
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch files for version ${version}: ${res.statusText}`);
+  async function loadChildrenForVersion(version: string): Promise<TreeViewNode[]> {
+    const cached = childrenCache.value.get(version);
+    if (cached) {
+      return cached;
     }
 
-    interface Entry {
-      name: string;
-      children?: Entry[];
+    // return existing promise if already loading (prevents duplicate requests)
+    const existingPromise = loadingPromises.value.get(version);
+    if (existingPromise) {
+      return existingPromise;
     }
 
-    const data = (await res.json()) as Entry[];
+    // create new loading promise
+    const loadingPromise = (async () => {
+      try {
+        const files = await getFilesByVersion(version);
+        childrenCache.value.set(version, files);
+        return files;
+      } catch (error) {
+        logger.error(`Failed to load files for version ${version}:`, error);
+        return [];
+      } finally {
+        // clean up loading promise regardless of success/failure
+        loadingPromises.value.delete(version);
+      }
+    })();
 
-    return {
-      treeItem: {
-        label: version,
-        collapsibleState: 1,
-        contextValue: "ucd:version-folder",
-      },
-      children: data.map((entry) => {
-        return {
-          treeItem: {
-            iconPath: entry.children?.length ? "$(folder)" : "$(file)",
-            label: entry.name,
-            collapsibleState: entry.children?.length ? 2 : 0,
-            contextValue: entry.children?.length ? "ucd:version-folder" : "ucd:version-file",
-          },
-          children: entry.children?.map((child) => ({
-            treeItem: {
-              label: child.name,
-            },
-          })) ?? [],
-        };
-      }),
-    };
-  } catch (err) {
-    logger.error(`Error fetching files for version ${version}:`, err);
-    return {
-      treeItem: {
-        label: `Error loading files for version ${version}`,
-        collapsibleState: 0,
-        contextValue: "ucd:error",
-      },
-      children: [],
-    };
+    // store the promise to prevent duplicate requests
+    loadingPromises.value.set(version, loadingPromise);
+    return loadingPromise;
   }
-}
+
+  const nodes = computed<TreeViewNode[]>(() =>
+    UNICODE_VERSION_METADATA.map((metadata) => {
+      const version = metadata.version;
+      return {
+        treeItem: {
+          iconPath: new ThemeIcon("folder"),
+          label: metadata.version + (metadata.status === "draft" ? " (Draft)" : ""),
+          description: metadata.date ? `Released in ${metadata.date}` : "",
+          tooltip: `Documentation: ${metadata.documentationUrl}\nUCD URL: ${metadata.ucdUrl}`,
+          collapsibleState: TreeItemCollapsibleState.Collapsed,
+          contextValue: "ucd:version-folder",
+          __ucd: metadata,
+        } as UCDTreeItem,
+        children: childrenCache.value.get(version) || [],
+      };
+    }),
+  );
+
+  const view = useTreeView("ucd:explorer", nodes, {
+    showCollapseAll: true,
+  });
+
+  view.onDidExpandElement(async (event) => {
+    try {
+      const { element } = event;
+      const treeItem = typeof element.treeItem === "object" && "then" in element.treeItem
+        ? await element.treeItem
+        : element.treeItem;
+
+      if (treeItem.contextValue === "ucd:version-folder") {
+        const version = (treeItem as UCDTreeItem).__ucd?.version;
+        if (version) {
+          await loadChildrenForVersion(version);
+        }
+      }
+    } catch (err) {
+      logger.error("An error occurred while expanding entry in UCD Explorer", err);
+    }
+  });
+
+  return view;
+});
