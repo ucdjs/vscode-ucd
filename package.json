@@ -8,7 +8,7 @@
     "email": "lucasnrgaard@gmail.com"
   },
   "publisher": "luxass",
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.11.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -36,23 +36,34 @@
         "command": "ucd.visualize-file",
         "title": "Visualize UCD File",
         "category": "UCD"
+      },
+      {
+        "command": "ucd.refresh-explorer",
+        "title": "Refresh UCD Explorer",
+        "category": "UCD",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ucd.open-explorer-entry",
+        "title": "Open UCD Explorer Entry",
+        "category": "UCD"
       }
     ],
     "configuration": {
       "title": "UCD",
       "properties": {
-        "ucd.local-data-files-path": {
+        "ucd.local-data-files-store": {
           "type": "string",
-          "description": "Path to local UCD data files",
+          "description": "Path to local UCD data file store",
           "default": ""
         },
         "ucd.data-files-api": {
           "type": "string",
           "description": "API URL to fetch UCD data files from",
-          "default": "https://unicode-tools.luxass.dev",
+          "default": "https://unicode-api.luxass.dev",
           "enum": [
-            "https://unicode-tools.luxass.dev",
-            "https://preview.unicode-tools.luxass.dev"
+            "https://unicode-api.luxass.dev",
+            "https://preview.unicode-api.luxass.dev"
           ]
         }
       }
@@ -69,17 +80,29 @@
     "views": {
       "ucd-explorer": [
         {
-          "id": "ucd.all-files",
+          "id": "ucd:explorer",
           "name": "All Files",
           "icon": "$(git-pull-request)"
         }
       ]
     },
     "menus": {
+      "view/title": [
+        {
+          "command": "ucd.refresh-explorer",
+          "when": "view == ucd:explorer",
+          "group": "navigation"
+        }
+      ],
       "view/item/context": [
         {
           "command": "ucd.visualize-file",
-          "when": "viewItem == ucd:version-file",
+          "when": "viewItem == ucd:explorer-file",
+          "group": "navigation"
+        },
+        {
+          "command": "ucd.open-explorer-entry",
+          "when": "viewItem == ucd:explorer-file || viewItem == ucd:explorer-folder || viewItem == ucd:version-folder",
           "group": "navigation"
         }
       ]
@@ -87,7 +110,7 @@
     "viewsWelcome": [
       {
         "view": "ucd-explorer",
-        "contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+        "contents": "# Welcome to UCD Explorer\n\nThis extension allows you to browse and visualize Unicode Character Database (UCD) files. Use the commands in the command palette or the context menu to interact with the files."
       }
     ]
   },
@@ -105,15 +128,15 @@
   },
   "devDependencies": {
     "@luxass/eslint-config": "^4.18.1",
-    "@luxass/unicode-utils": "https://pkg.pr.new/@luxass/unicode-utils@68",
+    "@luxass/unicode-utils": "^0.12.0-beta.4",
     "@reactive-vscode/vueuse": "^0.2.17",
     "@types/node": "^22.15.18",
     "@types/vscode": "^1.100.0",
-    "@vscode/vsce": "^3.4.0",
+    "@vscode/vsce": "^3.4.2",
     "eslint": "^9.27.0",
     "eslint-plugin-format": "^1.0.1",
     "reactive-vscode": "^0.2.17",
-    "tsdown": "^0.11.9",
+    "tsdown": "^0.12.5",
     "typescript": "^5.8.3",
     "vscode-ext-gen": "^1.0.2"
   }
