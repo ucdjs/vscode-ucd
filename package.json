@@ -52,10 +52,18 @@
     "configuration": {
       "title": "UCD",
       "properties": {
-        "ucd.local-data-files-store": {
+        "ucd.local-store-path": {
           "type": "string",
           "description": "Path to local UCD data file store",
           "default": ""
+        },
+        "ucd.store-filters": {
+          "type": "array",
+          "description": "Filters to apply on UCD Explorer",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
         },
         "ucd.data-files-api": {
           "type": "string",

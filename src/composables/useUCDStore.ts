@@ -7,16 +7,19 @@ export const useUCDStore = createSingletonComposable(() => {
 
   const createStoreFromConfig = async (localDataFilesStore: string | null) => {
     if (localDataFilesStore == null) {
-      return await createUCDStore("remote");
+      return await createUCDStore("remote", {
+        filters: config["store-filters"],
+      });
     } else {
       return await createUCDStore("local", {
         basePath: localDataFilesStore,
+        filters: config["store-filters"],
       });
     }
   };
 
   watch(
-    () => config["local-data-files-store"],
+    () => config["local-store-path"],
     async (newVal, oldVal) => {
       if (newVal === oldVal) {
         return;
