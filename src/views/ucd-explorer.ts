@@ -3,6 +3,7 @@ import type { TreeItem } from "vscode";
 import { UNICODE_VERSION_METADATA } from "@luxass/unicode-utils";
 import { computed, createSingletonComposable, ref, useTreeView } from "reactive-vscode";
 import { ThemeIcon, TreeItemCollapsibleState } from "vscode";
+import { useUCDStore } from "../composables/useUCDStore";
 import { getFilesByVersion } from "../lib/files";
 import { logger } from "../logger";
 
@@ -11,6 +12,8 @@ export interface UCDTreeItem extends TreeItem {
 }
 
 export const useUCDExplorer = createSingletonComposable(() => {
+  const store = useUCDStore();
+
   const childrenCache = ref<Map<string, TreeViewNode[]>>(new Map());
   const loadingPromises = ref<Map<string, Promise<TreeViewNode[]>>>(new Map());
 
@@ -29,7 +32,7 @@ export const useUCDExplorer = createSingletonComposable(() => {
     // create new loading promise
     const loadingPromise = (async () => {
       try {
-        const files = await getFilesByVersion(version);
+        const files = await getFilesByVersion(store.value, version);
         childrenCache.value.set(version, files);
         return files;
       } catch (error) {

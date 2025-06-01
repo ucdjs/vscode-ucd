@@ -2,6 +2,7 @@ import type { TreeViewNode } from "reactive-vscode";
 import type { UCDTreeItem } from "./views/ucd-explorer";
 import { defineExtension, executeCommand, useCommand } from "reactive-vscode";
 import { Uri } from "vscode";
+import { useUCDStore } from "./composables/useUCDStore";
 import * as Meta from "./generated/meta";
 import { getFilesByVersion } from "./lib/files";
 import { logger } from "./logger";
@@ -10,8 +11,9 @@ import { useUCDExplorer } from "./views/ucd-explorer";
 const { activate, deactivate } = defineExtension(async () => {
   useCommand(Meta.commands.browseUcdFiles, async () => {
     logger.info("Browsing UCD files...");
-    const view = await getFilesByVersion("16.0.0");
-    logger.info(`Fetched files for version 16.0.0: ${JSON.stringify(view, null, 2)}`);
+    const store = useUCDStore();
+    const data = await store.value?.getFilePaths("16.0.0");
+    logger.info(`Fetched files for version 16.0.0: ${JSON.stringify(data, null, 2)}`);
   });
 
   useCommand(Meta.commands.visualizeFile, () => {

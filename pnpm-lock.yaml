@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@luxass/utils': npm:@luxass/utils@2.3.0
+
 importers:
 
   .:
@@ -304,8 +307,8 @@ packages:
   '@luxass/unicode-utils@0.12.0-beta.5':
     resolution: {integrity: sha512-yzo+ETfvOOVOB2A4Oir2jX1wiM7f9ZE6KTxivDeTMi8eXo8Vbz8ktr2aiiCuTzwo6VZ7bNwHHtNdHa/XaneY7A==}
 
-  '@luxass/utils@2.2.1':
-    resolution: {integrity: sha512-riQdjsEXmHxaPDcWappVi1YYF/rsveZTvSIsev1m7qYQrRq6aRNYWTVVPhye3Pdf0NCWUNIKIdtrtpHhx+SgYA==}
+  '@luxass/utils@2.3.0':
+    resolution: {integrity: sha512-xzrw331cVMJ3yYLSXF15bPl6VDNlp+KudJ0h7wMJ1V30i0Ti+qnfWchwwetypEwifZitZ9XrydSq1XrEMi7d7Q==}
     engines: {node: '>=20'}
 
   '@napi-rs/wasm-runtime@0.2.10':
@@ -505,6 +508,9 @@ packages:
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
 
+  '@types/retry@0.12.2':
+    resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
+
   '@types/sarif@2.1.7':
     resolution: {integrity: sha512-kRz0VEkJqWLf1LLVN4pT1cg1Z9wAuvI6L97V3m2f5B76Tg8d413ddvLBPTEHAZJlnn4XSvu0FkZtViCQGVyrXQ==}
 
@@ -579,8 +585,8 @@ packages:
     resolution: {tarball: https://pkg.pr.new/@ucdjs/ucd-store@25}
     version: 0.0.1
 
-  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@862f188':
-    resolution: {tarball: https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@862f188}
+  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7':
+    resolution: {tarball: https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7}
     version: 0.1.0
 
   '@unrs/resolver-binding-darwin-arm64@1.7.8':
@@ -1617,6 +1623,10 @@ packages:
     engines: {node: '>=14.16'}
     hasBin: true
 
+  is-network-error@1.1.0:
+    resolution: {integrity: sha512-tUdRRAnhT+OtCZR/LxZelH/C7QtjtFrTu5tXCA8pl55eTUElUHT+GPYV8MBMBvea/j+NxQqVt3LbWMRir7Gx9g==}
+    engines: {node: '>=16'}
+
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
@@ -2046,6 +2056,10 @@ packages:
     resolution: {integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==}
     engines: {node: '>=10'}
 
+  p-retry@6.2.1:
+    resolution: {integrity: sha512-hEt02O4hUct5wtwg4H4KcWgDdm+l1bOaEy/hWzd8xtXB9BqxTWBBhb+2ImAtH4Cv4rPjV76xN3Zumqk3k3AhhQ==}
+    engines: {node: '>=16.17'}
+
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
@@ -2244,6 +2258,10 @@ packages:
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
+  retry@0.13.1:
+    resolution: {integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==}
+    engines: {node: '>= 4'}
 
   reusify@1.1.0:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
@@ -3004,10 +3022,12 @@ snapshots:
 
   '@luxass/unicode-utils@0.12.0-beta.5':
     dependencies:
-      '@luxass/utils': 2.2.1
+      '@luxass/utils': 2.3.0
       defu: 6.1.4
 
-  '@luxass/utils@2.2.1': {}
+  '@luxass/utils@2.3.0':
+    dependencies:
+      p-retry: 6.2.1
 
   '@napi-rs/wasm-runtime@0.2.10':
     dependencies:
@@ -3226,6 +3246,8 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
+  '@types/retry@0.12.2': {}
+
   '@types/sarif@2.1.7': {}
 
   '@types/unist@3.0.3': {}
@@ -3335,14 +3357,14 @@ snapshots:
   '@ucdjs/ucd-store@https://pkg.pr.new/@ucdjs/ucd-store@25':
     dependencies:
       '@luxass/unicode-utils-new': '@luxass/unicode-utils@0.12.0-beta.5'
-      '@luxass/utils': 2.2.1
-      '@ucdjs/utils': https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@862f188
+      '@luxass/utils': 2.3.0
+      '@ucdjs/utils': https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7
       defu: 6.1.4
       fs-extra: 11.3.0
       micromatch: 4.0.8
       zod: 3.25.45
 
-  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@862f188': {}
+  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7': {}
 
   '@unrs/resolver-binding-darwin-arm64@1.7.8':
     optional: true
@@ -4433,6 +4455,8 @@ snapshots:
     dependencies:
       is-docker: 3.0.0
 
+  is-network-error@1.1.0: {}
+
   is-number@7.0.0: {}
 
   is-wsl@3.1.0:
@@ -5035,6 +5059,12 @@ snapshots:
     dependencies:
       aggregate-error: 3.1.0
 
+  p-retry@6.2.1:
+    dependencies:
+      '@types/retry': 0.12.2
+      is-network-error: 1.1.0
+      retry: 0.13.1
+
   package-json-from-dist@1.0.1: {}
 
   package-manager-detector@1.3.0: {}
@@ -5252,6 +5282,8 @@ snapshots:
   resolve-from@4.0.0: {}
 
   resolve-pkg-maps@1.0.0: {}
+
+  retry@0.13.1: {}
 
   reusify@1.1.0: {}
 

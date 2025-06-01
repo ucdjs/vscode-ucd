@@ -148,5 +148,10 @@
     "tsdown": "^0.12.5",
     "typescript": "^5.8.3",
     "vscode-ext-gen": "^1.0.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@luxass/utils": "npm:@luxass/utils@2.3.0"
+    }
   }
 }

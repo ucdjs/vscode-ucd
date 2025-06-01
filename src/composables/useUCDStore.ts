@@ -1,12 +1,15 @@
+import type { LocalUCDStore, RemoteUCDStore } from "@ucdjs/ucd-store";
 import { createUCDStore } from "@ucdjs/ucd-store";
 import { createSingletonComposable, ref, watch } from "reactive-vscode";
 import { config } from "../config";
 
-export const useUCDStore = createSingletonComposable(() => {
-  const store = ref<Awaited<ReturnType<typeof createUCDStore>> | null>(null);
+export type UCDStore = RemoteUCDStore | LocalUCDStore;
 
-  const createStoreFromConfig = async (localDataFilesStore: string | null) => {
-    if (localDataFilesStore == null) {
+export const useUCDStore = createSingletonComposable(() => {
+  const store = ref<UCDStore | null>(null);
+
+  const createStoreFromConfig = async (localDataFilesStore: string | null): Promise<UCDStore> => {
+    if (localDataFilesStore == null || localDataFilesStore.trim() === "") {
       return await createUCDStore("remote", {
         filters: config["store-filters"],
       });
