@@ -1,5 +1,6 @@
 import type { TreeViewNode } from "reactive-vscode";
 import type { UCDTreeItem } from "./views/ucd-explorer";
+import { hasUCDFolderPath } from "@luxass/unicode-utils";
 import { defineExtension, executeCommand, useCommand } from "reactive-vscode";
 import { Uri } from "vscode";
 import { useUCDStore } from "./composables/useUCDStore";
@@ -25,25 +26,38 @@ const { activate, deactivate } = defineExtension(async () => {
     logger.info("UCD Explorer refreshed.");
   });
 
-  useCommand(Meta.commands.openExplorerEntry, async (entry: TreeViewNode) => {
-    logger.info(`Opening UCD Explorer entry: ${JSON.stringify(entry, null, 2)}`);
-    if (!entry.treeItem || !(entry.treeItem as UCDTreeItem).__ucd) {
-      logger.error("invalid entry provided to openExplorerEntry command.");
+  useCommand(Meta.commands.openExplorerEntry, async (treeViewNodeOrVersion: TreeViewNode | string, filePath: string) => {
+    if (treeViewNodeOrVersion == null) {
+      logger.error("No entry provided to openExplorerEntry command.");
       return;
     }
 
-    const ucdItem = (entry.treeItem as UCDTreeItem).__ucd;
-    if (!ucdItem) {
-      logger.error("UCD item is undefined or null.");
-      return;
+    let ucdURL: string | undefined;
+
+    if (typeof treeViewNodeOrVersion === "string") {
+      ucdURL = `https://unicode.org/Public/${treeViewNodeOrVersion}/${hasUCDFolderPath(treeViewNodeOrVersion) ? "ucd/" : ""}${filePath}`;
+    } else {
+      console.warn("Received TreeViewNode, checking for UCD item...", JSON.stringify(treeViewNodeOrVersion, null, 2));
+      if (!treeViewNodeOrVersion.treeItem || !(treeViewNodeOrVersion.treeItem as UCDTreeItem).__ucd) {
+        logger.error("invalid entry provided to openExplorerEntry command.");
+        return;
+      }
+
+      const ucdItem = (treeViewNodeOrVersion.treeItem as UCDTreeItem).__ucd;
+      if (!ucdItem) {
+        logger.error("UCD item is undefined or null.");
+        return;
+      }
+
+      if (!ucdItem?.ucdUrl) {
+        logger.error("UCD item does not have a valid URL.");
+        return;
+      }
+
+      ucdURL = ucdItem.ucdUrl;
     }
 
-    if (!ucdItem?.ucdUrl) {
-      logger.error("UCD item does not have a valid URL.");
-      return;
-    }
-
-    executeCommand("vscode.open", Uri.parse(ucdItem.ucdUrl));
+    executeCommand("vscode.open", Uri.parse(ucdURL));
   });
 
   useUCDExplorer();
