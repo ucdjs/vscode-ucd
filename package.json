@@ -129,6 +129,13 @@
         "view": "ucd-explorer",
         "contents": "# Welcome to UCD Explorer\n\nThis extension allows you to browse and visualize Unicode Character Database (UCD) files. Use the commands in the command palette or the context menu to interact with the files."
       }
+    ],
+    "languages": [
+      {
+        "id": "ucd",
+        "aliases": ["Unicode Character Database", "UCD"],
+        "extensions": [".ucd"]
+      }
     ]
   },
   "scripts": {
