@@ -2,10 +2,10 @@ import type { TreeViewNode } from "reactive-vscode";
 import type { UCDTreeItem } from "./views/ucd-explorer";
 import { hasUCDFolderPath } from "@luxass/unicode-utils";
 import { defineExtension, executeCommand, useCommand } from "reactive-vscode";
-import { Uri } from "vscode";
+import { Uri, window } from "vscode";
+import { useUCDContentProvider } from "./composables/useUCDContentProvider";
 import { useUCDStore } from "./composables/useUCDStore";
 import * as Meta from "./generated/meta";
-import { getFilesByVersion } from "./lib/files";
 import { logger } from "./logger";
 import { useUCDExplorer } from "./views/ucd-explorer";
 
@@ -26,24 +26,21 @@ const { activate, deactivate } = defineExtension(async () => {
     logger.info("UCD Explorer refreshed.");
   });
 
-  useCommand(Meta.commands.openExplorerEntry, async (treeViewNodeOrVersion: TreeViewNode | string, filePath: string) => {
-    if (treeViewNodeOrVersion == null) {
+  useCommand(Meta.commands.openExplorerEntry, async (versionOrTreeView: string | TreeViewNode, filePath?: string) => {
+    if (versionOrTreeView == null) {
       logger.error("No entry provided to openExplorerEntry command.");
       return;
     }
 
-    let ucdURL: string | undefined;
+    if (typeof versionOrTreeView === "object" && "treeItem" in versionOrTreeView) {
+      const treeView = versionOrTreeView;
 
-    if (typeof treeViewNodeOrVersion === "string") {
-      ucdURL = `https://unicode.org/Public/${treeViewNodeOrVersion}/${hasUCDFolderPath(treeViewNodeOrVersion) ? "ucd/" : ""}${filePath}`;
-    } else {
-      console.warn("Received TreeViewNode, checking for UCD item...", JSON.stringify(treeViewNodeOrVersion, null, 2));
-      if (!treeViewNodeOrVersion.treeItem || !(treeViewNodeOrVersion.treeItem as UCDTreeItem).__ucd) {
-        logger.error("invalid entry provided to openExplorerEntry command.");
+      if (!treeView.treeItem || !(treeView.treeItem as UCDTreeItem).__ucd) {
+        logger.error("Invalid entry provided to openExplorerEntry command.");
         return;
       }
 
-      const ucdItem = (treeViewNodeOrVersion.treeItem as UCDTreeItem).__ucd;
+      const ucdItem = (treeView.treeItem as UCDTreeItem).__ucd;
       if (!ucdItem) {
         logger.error("UCD item is undefined or null.");
         return;
@@ -54,13 +51,22 @@ const { activate, deactivate } = defineExtension(async () => {
         return;
       }
 
-      ucdURL = ucdItem.ucdUrl;
+      executeCommand("vscode.open", Uri.parse(ucdItem.ucdUrl));
+      return;
     }
 
-    executeCommand("vscode.open", Uri.parse(ucdURL));
+    const version = versionOrTreeView;
+    if (!filePath) {
+      logger.error("File path is required when version is provided as string.");
+      return;
+    }
+
+    await window.showTextDocument(Uri.parse(`ucd:${version}/${hasUCDFolderPath(version) ? "ucd/" : ""}${filePath}`));
   });
 
   useUCDExplorer();
+
+  useUCDContentProvider();
 });
 
 export { activate, deactivate };

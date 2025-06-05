@@ -35,7 +35,8 @@
       {
         "command": "ucd.visualize-file",
         "title": "Visualize UCD File",
-        "category": "UCD"
+        "category": "UCD",
+        "icon": "$(eye)"
       },
       {
         "command": "ucd.refresh-explorer",
@@ -112,6 +113,13 @@
           "command": "ucd.open-explorer-entry",
           "when": "viewItem == ucd:explorer-file || viewItem == ucd:explorer-folder || viewItem == ucd:version-folder",
           "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "ucd.visualize-file",
+          "group": "navigation",
+          "when": "resourceScheme == ucd"
         }
       ]
     },

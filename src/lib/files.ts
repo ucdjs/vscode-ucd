@@ -1,5 +1,7 @@
 import type { UCDStore, UnicodeVersionFile } from "@ucdjs/ucd-store";
 import type { TreeViewNode } from "reactive-vscode";
+import type { UCDTreeItem } from "../views/ucd-explorer";
+import { hasUCDFolderPath } from "@luxass/unicode-utils";
 import { ThemeIcon, TreeItemCollapsibleState } from "vscode";
 import * as Meta from "../generated/meta";
 import { logger } from "../logger";
@@ -28,7 +30,11 @@ function mapEntryToTreeNode(version: string, entry: UnicodeVersionFile, parentPa
             },
           }
         : {}),
-    },
+      __ucd: {
+        version,
+        ucdUrl: `https://unicode.org/Public/${version}/${hasUCDFolderPath(version) ? "ucd/" : ""}${filePathForCommand}`,
+      },
+    } as UCDTreeItem,
     children: hasChildren ? entry.children?.map((child) => mapEntryToTreeNode(version, child, currentPath)) : [],
   };
 }

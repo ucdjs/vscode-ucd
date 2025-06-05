@@ -8,7 +8,10 @@ import { getFilesByVersion } from "../lib/files";
 import { logger } from "../logger";
 
 export interface UCDTreeItem extends TreeItem {
-  __ucd?: typeof UNICODE_VERSION_METADATA[number];
+  __ucd?: {
+    ucdUrl: string;
+    version: string;
+  };
 }
 
 export const useUCDExplorer = createSingletonComposable(() => {
