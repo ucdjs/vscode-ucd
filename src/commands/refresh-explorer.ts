@@ -5,10 +5,15 @@ import { logger } from "../logger";
 
 export function useRefreshExplorerCommand() {
   useCommand(Meta.commands.refreshExplorer, async () => {
-    logger.info("Refreshing UCD Explorer...");
+    const explorer = useUCDExplorer();
 
-    useUCDExplorer().refresh();
+    if (!explorer) {
+      logger.error("UCD Explorer is not initialized.");
+      return;
+    }
 
-    logger.info("UCD Explorer refreshed.");
+    explorer.refresh();
+
+    logger.info("UCD Explorer refreshed successfully.");
   });
 }
