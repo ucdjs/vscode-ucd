@@ -1,4 +1,4 @@
-import type { LocalUCDStore, RemoteUCDStore, UCDStore } from "@ucdjs/ucd-store";
+import type { UCDStore } from "@ucdjs/ucd-store";
 import { createUCDStore } from "@ucdjs/ucd-store";
 import { createSingletonComposable, ref, watch } from "reactive-vscode";
 import { config } from "../config";

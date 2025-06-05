@@ -35,7 +35,7 @@ export const useUCDExplorer = createSingletonComposable(() => {
     // create new loading promise
     const loadingPromise = (async () => {
       try {
-        const files = await getFilesByVersion(store.value, version);
+        const files = await getFilesByVersion(store.value!, version);
         childrenCache.value.set(version, files);
         return files;
       } catch (error) {
