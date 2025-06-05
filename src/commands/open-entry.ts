@@ -2,7 +2,7 @@ import type { TreeViewNode } from "reactive-vscode";
 import type { UCDTreeItem } from "../composables/useUCDExplorer";
 import { hasUCDFolderPath } from "@luxass/unicode-utils";
 import { executeCommand, useCommand } from "reactive-vscode";
-import { Uri, window } from "vscode";
+import { languages, Uri, window, workspace } from "vscode";
 import * as Meta from "../generated/meta";
 import { logger } from "../logger";
 
@@ -42,6 +42,10 @@ export function useOpenEntryCommand() {
       return;
     }
 
-    await window.showTextDocument(Uri.parse(`ucd:${version}/${hasUCDFolderPath(version) ? "ucd/" : ""}${filePath}`));
+    const textEditor = await window.showTextDocument(Uri.parse(`ucd:${version}/${hasUCDFolderPath(version) ? "ucd/" : ""}${filePath}`));
+    // I can't figure out how to set the language of the text editor directly,
+    // so we use the languages API to set the language for the document.
+    // The only issue is that, this triggers a close event, and a open event...
+    await languages.setTextDocumentLanguage(textEditor.document, "ucd");
   });
 }
