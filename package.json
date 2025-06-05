@@ -36,7 +36,8 @@
         "command": "ucd.visualize-file",
         "title": "Visualize UCD File",
         "category": "UCD",
-        "icon": "$(eye)"
+        "icon": "$(eye)",
+        "enablement": "resourceScheme == ucd"
       },
       {
         "command": "ucd.refresh-explorer",

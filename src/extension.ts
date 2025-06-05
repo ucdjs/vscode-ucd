@@ -1,8 +1,8 @@
 import type { TreeViewNode } from "reactive-vscode";
 import type { UCDTreeItem } from "./views/ucd-explorer";
 import { hasUCDFolderPath } from "@luxass/unicode-utils";
-import { defineExtension, executeCommand, useCommand } from "reactive-vscode";
-import { Uri, window } from "vscode";
+import { defineExtension, executeCommand, useActiveTextEditor, useCommand, useEditorDecorations } from "reactive-vscode";
+import { Range, Uri, window } from "vscode";
 import { useUCDContentProvider } from "./composables/useUCDContentProvider";
 import { useUCDStore } from "./composables/useUCDStore";
 import * as Meta from "./generated/meta";
@@ -17,13 +17,21 @@ const { activate, deactivate } = defineExtension(async () => {
     logger.info(`Fetched files for version 16.0.0: ${JSON.stringify(data, null, 2)}`);
   });
 
-  useCommand(Meta.commands.visualizeFile, () => {
-    logger.info("Visualizing UCD file...");
-  });
-
   useCommand(Meta.commands.refreshExplorer, async () => {
     logger.info("Refreshing UCD Explorer...");
     logger.info("UCD Explorer refreshed.");
+  });
+
+  useCommand(Meta.commands.visualizeFile, () => {
+    logger.info("Visualizing UCD file...");
+    // require that current editor is a UCD File
+    const editor = useActiveTextEditor();
+    logger.info("Current active editor:", JSON.stringify(editor.value, null, 2));
+    useEditorDecorations(editor, {
+      backgroundColor: "red",
+    }, () => [
+      editor.value?.visibleRanges[0] || new Range(0, 0, 20, 20),
+    ]);
   });
 
   useCommand(Meta.commands.openExplorerEntry, async (versionOrTreeView: string | TreeViewNode, filePath?: string) => {
