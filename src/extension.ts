@@ -11,32 +11,29 @@ import { useUCDExplorer } from "./views/ucd-explorer";
 
 const { activate, deactivate } = defineExtension(async () => {
   useCommand(Meta.commands.browseUcdFiles, async () => {
-    logger.info("Browsing UCD files...");
-    const store = useUCDStore();
-    const data = await store.value?.getFilePaths("16.0.0");
-    logger.info(`Fetched files for version 16.0.0: ${JSON.stringify(data, null, 2)}`);
+    executeCommand("ucd:explorer.focus");
   });
 
   useCommand(Meta.commands.refreshExplorer, async () => {
     logger.info("Refreshing UCD Explorer...");
     logger.info("UCD Explorer refreshed.");
+
+    const store = useUCDStore();
+    if (!store.value) {
+      logger.error("UCD Store is not initialized.");
+      return;
+    }
+
+    store.refresh();
   });
 
   useCommand(Meta.commands.visualizeFile, () => {
-    logger.info("Visualizing UCD file...");
-    // require that current editor is a UCD File
-    const editor = useActiveTextEditor();
-    logger.info("Current active editor:", JSON.stringify(editor.value, null, 2));
-    useEditorDecorations(editor, {
-      backgroundColor: "red",
-    }, () => [
-      editor.value?.visibleRanges[0] || new Range(0, 0, 20, 20),
-    ]);
+    window.showErrorMessage("This command is not implemented yet.");
   });
 
-  useCommand(Meta.commands.openExplorerEntry, async (versionOrTreeView: string | TreeViewNode, filePath?: string) => {
+  useCommand(Meta.commands.openEntry, async (versionOrTreeView: string | TreeViewNode, filePath?: string) => {
     if (versionOrTreeView == null) {
-      logger.error("No entry provided to openExplorerEntry command.");
+      logger.error("No entry provided to openEntry command.");
       return;
     }
 
@@ -44,7 +41,7 @@ const { activate, deactivate } = defineExtension(async () => {
       const treeView = versionOrTreeView;
 
       if (!treeView.treeItem || !(treeView.treeItem as UCDTreeItem).__ucd) {
-        logger.error("Invalid entry provided to openExplorerEntry command.");
+        logger.error("Invalid entry provided to openEntry command.");
         return;
       }
 

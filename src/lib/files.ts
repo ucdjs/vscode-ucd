@@ -20,7 +20,7 @@ function mapEntryToTreeNode(version: string, entry: UnicodeVersionFile, parentPa
       ...(!hasChildren
         ? {
             command: {
-              command: Meta.commands.openExplorerEntry,
+              command: Meta.commands.openEntry,
               title: "Open UCD Data File",
               arguments: [
                 version,

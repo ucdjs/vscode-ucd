@@ -46,9 +46,10 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "ucd.open-explorer-entry",
-        "title": "Open UCD Explorer Entry",
-        "category": "UCD"
+        "command": "ucd.open-entry",
+        "title": "Open UCD Entry",
+        "category": "UCD",
+        "icon": "$(file-text)"
       }
     ],
     "configuration": {
@@ -111,7 +112,7 @@
           "group": "navigation"
         },
         {
-          "command": "ucd.open-explorer-entry",
+          "command": "ucd.open-entry",
           "when": "viewItem == ucd:explorer-file || viewItem == ucd:explorer-folder || viewItem == ucd:version-folder",
           "group": "navigation"
         }
@@ -120,16 +121,10 @@
         {
           "command": "ucd.visualize-file",
           "group": "navigation",
-          "when": "resourceScheme == ucd"
+          "when": "editorLangId == ucd"
         }
       ]
     },
-    "viewsWelcome": [
-      {
-        "view": "ucd-explorer",
-        "contents": "# Welcome to UCD Explorer\n\nThis extension allows you to browse and visualize Unicode Character Database (UCD) files. Use the commands in the command palette or the context menu to interact with the files."
-      }
-    ],
     "languages": [
       {
         "id": "ucd",
