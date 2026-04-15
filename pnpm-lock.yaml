@@ -21,8 +21,8 @@ importers:
         specifier: ^0.2.17
         version: 0.2.19
       '@types/node':
-        specifier: ^22.15.18
-        version: 22.15.29
+        specifier: ^24.0.0
+        version: 24.12.2
       '@types/vscode':
         specifier: ^1.100.0
         version: 1.100.0
@@ -502,8 +502,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@22.15.29':
-    resolution: {integrity: sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ==}
+  '@types/node@24.12.2':
+    resolution: {integrity: sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -585,8 +585,8 @@ packages:
     resolution: {tarball: https://pkg.pr.new/@ucdjs/ucd-store@25}
     version: 0.0.1
 
-  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7':
-    resolution: {tarball: https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7}
+  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@f3b06bb':
+    resolution: {tarball: https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@f3b06bb}
     version: 0.1.0
 
   '@unrs/resolver-binding-darwin-arm64@1.7.8':
@@ -1483,6 +1483,7 @@ packages:
   glob@11.0.2:
     resolution: {integrity: sha512-YT7U7Vye+t5fZ/QMkBFrTJ7ZQxInIUjwyAjVj84CYXqgBdv30MFUPGnBR6sQaVq6Is15wYJUsnzTuWaGRBhBAQ==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   globals@14.0.0:
@@ -2160,6 +2161,7 @@ packages:
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
+    deprecated: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
     hasBin: true
 
   prelude-ls@1.2.1:
@@ -2558,8 +2560,8 @@ packages:
   underscore@1.13.7:
     resolution: {integrity: sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==}
 
-  undici-types@6.21.0:
-    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
   undici@6.21.3:
     resolution: {integrity: sha512-gBLkYIlEnSp8pFbT64yFgGE6UIB9tAkhukC23PmMDCe5Nd+cRqKxSjw5y54MK2AZMgZfJWMaNE4nYUHgi1XEOw==}
@@ -2627,6 +2629,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -3240,9 +3243,9 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@22.15.29':
+  '@types/node@24.12.2':
     dependencies:
-      undici-types: 6.21.0
+      undici-types: 7.16.0
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -3358,13 +3361,13 @@ snapshots:
     dependencies:
       '@luxass/unicode-utils-new': '@luxass/unicode-utils@0.12.0-beta.5'
       '@luxass/utils': 2.3.0
-      '@ucdjs/utils': https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7
+      '@ucdjs/utils': https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@f3b06bb
       defu: 6.1.4
       fs-extra: 11.3.0
       micromatch: 4.0.8
       zod: 3.25.45
 
-  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@8c880d7': {}
+  '@ucdjs/utils@https://pkg.pr.new/ucdjs/ucd/@ucdjs/utils@f3b06bb': {}
 
   '@unrs/resolver-binding-darwin-arm64@1.7.8':
     optional: true
@@ -5618,7 +5621,7 @@ snapshots:
 
   underscore@1.13.7: {}
 
-  undici-types@6.21.0: {}
+  undici-types@7.16.0: {}
 
   undici@6.21.3: {}
 
